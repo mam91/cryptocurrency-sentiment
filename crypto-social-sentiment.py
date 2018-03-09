@@ -3,8 +3,8 @@ import requests
 import json
 import os
 import sys
-import socsentiment.social.reddit as reddit
-import socsentiment.social.twitter as twitter
+import socsentiment.reddit as reddit
+import socsentiment.twitter as twitter
 import pyprogress.progress as pp
 
 def roundStr(numberToRound):
