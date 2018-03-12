@@ -5,7 +5,7 @@ import os
 import sys
 import socsentiment.reddit as reddit
 import socsentiment.twitter as twitter
-import pyprogress.progress as pp
+import pyprogress.progress as pyprog
 
 def roundStr(numberToRound):
 	return "{:.4f}".format(numberToRound) 
@@ -16,7 +16,7 @@ def loadConfig(filename):
 	return data
 
 def AnalyzeReddit():
-	print("Analyzing Reddit Sentiment")
+	print("Analyzing Reddit Sentiment: ", end="", flush=True)
 
 	dbConfig = loadConfig(r'C:\AppCredentials\CoinTrackerPython\database.config')
 	
@@ -33,7 +33,7 @@ def AnalyzeReddit():
 		
 	redditApi = reddit.Client('/u/mmiller3')
 	
-	progress = pp.progress(len(rows))
+	progress = pyprog.progress(len(rows))
 
 	for x,row in enumerate(rows):
 		try:
@@ -48,11 +48,11 @@ def AnalyzeReddit():
 	cursor.close()
 	con.commit()
 	con.close()
-	print("Done")
+	progress.close()
 	
 	
 def AnalyzeTwitter():
-	print("Analyzing Twitter Sentiment")
+	print("Analyzing Twitter Sentiment: ", end="", flush=True)
 
 	dbConfig = loadConfig(r'C:\AppCredentials\CoinTrackerPython\database.config')
 
@@ -74,7 +74,7 @@ def AnalyzeTwitter():
 	access_token_secret = config[0]["access_token_secret"]
 		
 	twitterApi = twitter.Client(consumer_key,consumer_secret,access_token,access_token_secret)
-	progress = pp.progress(len(rows))
+	progress = pyprog.progress(len(rows))
 
 	for x,row in enumerate(rows):
 		progress.updatePercent(x)
@@ -85,10 +85,10 @@ def AnalyzeTwitter():
 	cursor.close()
 	con.commit()
 	con.close()
-	print("Done")
+	progress.close()
 	
 def main():
-	#AnalyzeReddit()
+	AnalyzeReddit()
 	AnalyzeTwitter()
 	
 main()
